@@ -1,3 +1,4 @@
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -13,12 +14,11 @@ file_lock = threading.Lock()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Or specify your frontend domain
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 class WasteBin(BaseModel):
     id: Optional[int] = None
@@ -109,4 +109,3 @@ def delete_bin(bin_id: int):
         raise HTTPException(status_code=404, detail="Bin not found")
     save_bins(new_bins)
     return {"success": True, "message": "Bin deleted"}
-
